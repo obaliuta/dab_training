@@ -1,0 +1,41 @@
+# This is a Declarative Automation Bundle definition for automation_budle_v1.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: automation_budle_v1
+  uuid: 57ef5e92-5c79-4016-8a65-dfeaa002e611
+
+include:
+  - resources/*.yml
+
+# Variable declarations. These variables are assigned in the dev/prod targets below.
+variables:
+  catalog:
+    description: The catalog to use
+  schema:
+    description: The schema to use
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://dbc-bd59a4a6-b9b9.cloud.databricks.com
+    variables:
+      catalog: dev_dabtest
+      schema: rnd
+  prod:
+    mode: production
+    workspace:
+      host: https://dbc-bd59a4a6-b9b9.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/obaliuta@gmail.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/obaliuta@gmail.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog: prod_dabtest
+      schema: rnd
+    permissions:
+      - user_name: obaliuta@gmail.com
+        level: CAN_MANAGE
