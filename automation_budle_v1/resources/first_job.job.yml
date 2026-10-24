@@ -34,6 +34,12 @@ resources:
           pipeline_task:
             pipeline_id: ${resources.pipelines.aggregations_pipeline.id}
 
+        - depends_on:
+            - task_key: refresh_pipeline
+          environment_key: default
+          notebook_task:
+            notebook_path: ../src/notebook_2.ipynb
+          task_key: notebook_2
       environments:
         - environment_key: default
           spec:
