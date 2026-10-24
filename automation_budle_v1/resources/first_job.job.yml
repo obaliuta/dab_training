@@ -25,6 +25,9 @@ resources:
         - task_key: notebook_writing_summary
           notebook_task:
             notebook_path: ../src/writing_summary_notebook.ipynb
+          compute:
+            hardware_accelerator: GPU_1xA10
+          environment_key: default
         - task_key: refresh_pipeline
           depends_on:
             - task_key: notebook_writing_summary
